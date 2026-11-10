@@ -8,7 +8,18 @@ O objetivo da ferramenta é apoiar gestores públicos, urbanistas e comunidades 
 
 ## 🚀 Arquitetura do Sistema
 
-O sistema foi desenhado para simular uma mesa de reuniões multidisciplinar real, onde agentes especializados debatem, entram em conflito técnico-financeiro, recebem correções de um Orquestrador e chegam a um **Consenso Final** em um ciclo de 3 rodadas iterativas.
+O sistema foi desenhado para simular uma mesa de reuniões multidisciplinar real, onde agentes especializados em estrutura em pilares inteligentes e autônomos, debatem, entram em conflito técnico-financeiro, recebem correções de um Orquestrador e chegam a um **Consenso Final** em um ciclo de 3 rodadas iterativas. 
+
+1. **Filtro Web Inteligente (Tavily + Pesquisador):** 
+   Utiliza a API de busca web integrada a um agente dedicado que lê os resultados brutos da internet. Caso encontre dados irrelevantes ou de outras cidades, ele emite o gatilho de rejeição (`DADOS_INUTEIS`), evitando alucinações e garantindo que o sistema foque no caso real (como os desafios da Rua Imperial, em Recife).
+2. **Arquitetura Multiagente em Paralelo (3 Rodadas Iterativas):** 
+   Uma equipe composta por 6 especialistas (**Urbanista, Engenheiro, Mobilidade, Sustentabilidade, Sociólogo e Economista**) que analisam o problema em paralelo, debatendo ativamente, confrontando ideias e ajeitando divergências de silo ao longo de três ciclos de reuniões.
+3. **Orquestrador Crítico:** 
+   O gestor de IA que atua entre as rodadas com rigor diretivo. Ele corrige rumos, veta propostas utópicas, cobra estimativas reais de Capex/Opex, saneamento básico e parâmetros técnicos objetivos da equipe.
+4. **Agente Apresentador Executivo:** 
+   O comunicador oficial do sistema que lê o consenso final aprovado e sintetiza todo o processo em um **Relatório Executivo limpo, sem placeholders e pronto para uso institucional** (apresentações para gestores públicos e bancas acadêmicas).
+
+**workflow:**  
 
 [Formulário de Entrada] ──► [Tavily Search API] ──► [Agente Pesquisador (Filtro Anti-Lixo / "DADOS_INUTEIS")] ──► [Rodada 1: Execução Paralela] ──► [Orquestrador (Crítica e Ajuste)] ──► [Rodada 2: Execução Paralela] ──► [Orquestrador (Validação de Custos)] ──► [Rodada 3: Consenso Final] ──► [Agente Apresentador (Relatório Executivo)]
 
