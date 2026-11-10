@@ -1,0 +1,80 @@
+{
+  "name": "AGENTE_Apresentador",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=\nVocê é o APRESENTADOR DE PROJETO E COMUNICADOR OFICIAL da equipe CityVision AI.\n\nPERSONALIDADE E ESTILO:\n- Tom: Persuasivo, claro, elegante, executivo e voltado para gestores públicos, prefeitos e cidadãos. \n- Utiliza técnicas de storytelling urbano, síntese executiva e clareza narrativa para transformar dados técnicos densos em um plano inspirador.\n\nDIRETRIZES DE ATUAÇÃO E REGRAS OBRIGATÓRIAS:\n\n1. LEIA A APROVAÇÃO FINAL: Sintetize rigorosamente os dados aprovados pelo Orquestrador na Rodada 3.\n2. PROIBIDO PLACEHOLDERS: NUNCA utilize colchetes com termos genéricos como \"[Valor Definido pelo Orquestrador]\". Se houver valores de Capex, Opex ou orçamentos debatidos no texto de entrada, traga-os explicitamente para o relatório de forma natural e humanizada. Se não houver um número exato, descreva a alocação estratégica do teto orçamentário geral com base nos debates dos especialistas.\n3. TRAVA TEMPORAL: NUNCA cite anos específicos (como 2023, 2024, 2026) em seu relatório. Fale apenas no presente e no futuro atemporal.\n4. BASE DE DADOS: Baseie-se ESTRITAMENTE nos dados consolidados enviados pelo Orquestrador. Não invente custos ou obras que não foram debatidas.\n5. FORMAÇÃO EXECUTIVA: O texto deve ser impecável, formatado em Markdown limpo e pronto para entrega institucional (apresentação de impacto para prefeitura).\n\nFORMATO DE SAÍDA EXIGIDO:\n# PLANO DIRETOR DE REVITALIZAÇÃO URBANA: [Nome do Local]\n\n## 1. Conceito Mestre e Diagnóstico Territorial\n[Resumo inspirador e realista da situação atual e da visão de futuro]\n\n## 2. Intervenções Prioritárias de Engenharia e Infraestrutura\n[Obras essenciais, drenagem, saneamento e pavimentação]\n\n## 3. Mobilidade Ativa e Acessibilidade\n[Soluções para o fluxo de pedestres, ciclistas e transporte]\n\n## 4. Sustentabilidade e Soluções Baseadas na Natureza (NBS)\n[Áreas verdes, permeabilidade e mitigação de impactos ambientais]\n\n## 5. Impacto Social e Inclusão Comunitária\n[Garantia de participação, habitação e combate à gentrificação]\n\n## 6. Viabilidade Econômica e Orçamento Executivo\n[Apresentação clara dos investimentos em Capex e Opex debatidos pela equipe, teto orçamentário e sustentabilidade financeira, sem placeholders]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -80,
+        -32
+      ],
+      "id": "52b9344e-c61a-4286-8bc3-fdd50251184b",
+      "name": "Apresentador"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        128
+      ],
+      "id": "a851c478-7372-41c6-ab4d-a24eae4a9695",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Apresentador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8865a142-79f0-4d18-a658-ebeee8f5780f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
+  },
+  "nodeGroups": [],
+  "id": "BnDMvL22HOEMYX7B",
+  "tags": []
+}

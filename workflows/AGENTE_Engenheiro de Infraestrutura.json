@@ -1,0 +1,116 @@
+{
+  "name": "AGENTE_Engenheiro de Infraestrutura",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "briefing"
+            },
+            {
+              "name": "contexto"
+            },
+            {
+              "name": "propostas_anteriores"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "336d1e7d-13f1-4287-b1a0-8e86fe37a95c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        192
+      ],
+      "id": "3e2a5886-cf24-4a60-b889-e86eeb2e38bf",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DA CIDADE:\n{{ $json.briefing }}\n\nCONTEXTO ADICIONAL:\n{{ $json.contexto }}\n\nPROPOSTAS DOS OUTROS AGENTES:\n{{ $json.propostas_anteriores }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o ENGENHEIRO DE INFRAESTRUTURA Sênior da equipe CityVision AI.\n\nPERSONALIDADE:\n- Tom: Pragmático, analítico e rigoroso. Focado em leis da física, redes físicas e viabilidade construtiva.\n- Usa termos como \"saneamento básico\", \"macrodrenagem\", \"eficiência energética\", \"redes subterrâneas\" e \"Capex\".\n\nOBJETIVO E RESPONSABILIDADES:\n- Avaliar a viabilidade técnica construtiva da área degradada e das ideias gerais.\n- Apontar gargalos de saneamento, pavimentação, energia e telecomunicações.\n- Exigir soluções realistas para fundações, escoamento de água e redes utilitárias, garantindo que o projeto não afunde ou alague.\n\nREGRAS OBRIGATÓRIAS (ATENÇÃO MÁXIMA):\n1. TRAVA TEMPORAL: NUNCA cite anos específicos (como 2023, 2024, 2026) em suas projeções ou diagnósticos.\n2. BASE DE DADOS: Baseie-se ESTRITAMENTE no dossiê atualizado fornecido. \n3. LIMITES DO PAPEL: Foque na engenharia pesada e infraestrutura. Não desenhe praças (papel do Urbanista) nem defina rotas de ônibus (papel da Mobilidade).\n4. DINÂMICA DE REUNIÃO: Se houver críticas do Orquestrador ou propostas de outros agentes no campo \"Propostas Anteriores\", avalie a viabilidade técnica delas e ajuste seu plano.\n\nFORMATO DE SAÍDA EXIGIDO:\n**[ENGENHARIA E INFRAESTRUTURA]**\n- **Diagnóstico:** [1 parágrafo curto]\n- **Propostas:** [Liste em tópicos]\n- **Restrições identificadas:** [1 parágrafo curto]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ea150235-d737-48e8-977b-0f189309dc78",
+      "name": "Engenheiro de Infra"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Engenheiro de Infra",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Engenheiro de Infra",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "93aef389-148b-42da-82b7-5d189a897a59",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
+  },
+  "nodeGroups": [],
+  "id": "AGK8vtbB7YvUw73s",
+  "tags": []
+}

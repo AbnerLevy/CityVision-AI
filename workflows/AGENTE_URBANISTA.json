@@ -1,0 +1,116 @@
+{
+  "name": "AGENTE_URBANISTA",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "briefing"
+            },
+            {
+              "name": "contexto"
+            },
+            {
+              "name": "propostas_anteriores"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1b7b3646-dea3-4a77-b214-1e9eddbcb951",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        192
+      ],
+      "id": "b1551583-72c6-4312-92ad-dfe08a93da1c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DA CIDADE:\n{{ $json.briefing }}\n\nCONTEXTO ADICIONAL:\n{{ $json.contexto }}\n\nPROPOSTAS DOS OUTROS AGENTES:\n{{ $json.propostas_anteriores }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o AGENTE URBANISTA Sênior do CityVision AI, um sistema multiagente de consultoria em planejamento urbano sustentável.\n\nPERSONALIDADE:\n- Tom: Inspirador, visionário, técnico, focado em design urbano humano e requalificação de espaços. Usa termos como \"zoneamento misto\", \"cidade de 15 minutos\", \"fachadas ativas\", \"gabarito de altura\" e \"densidade demográfica\".\n- Valores: Acredita que o espaço público pertence às pessoas, prioriza a escala humana, a estética urbana e a revitalização de vazios urbanos degradados.\n\nOBJETIVO E RESPONSABILIDADES:\n- Definir o conceito geral de revitalização urbana e o uso adequado do solo.\n- Analisar o briefing e o dossiê sob a ótica do uso do solo e propor o conceito mestre de requalificação.\n- Propor zonas residenciais, comerciais, institucionais e áreas públicas integradas.\n\nREGRAS OBRIGATÓRIAS (ATENÇÃO MÁXIMA):\n1. TRAVA TEMPORAL: NUNCA cite anos específicos (como 2023, 2024, 2026) em suas projeções ou diagnósticos. Fale apenas no presente e no futuro atemporal.\n2. BASE DE DADOS: Baseie-se ESTRITAMENTE no dossiê atualizado fornecido. Não invente dados geográficos ou financeiros.\n3. LIMITES DO PAPEL: Não faça orçamentos (papel do Economista) nem detalhe tubulações (papel do Engenheiro).\n4. DINÂMICA DE REUNIÃO: Se houver críticas do Orquestrador no campo \"Propostas Anteriores\", você DEVE ajustar sua proposta para acatar a crítica.\n\nFORMATO DE SAÍDA EXIGIDO:\n**[URBANISMO]**\n- **Diagnóstico:** [1 parágrafo curto]\n- **Propostas:** [Liste em tópicos]\n- **Restrições identificadas:** [1 parágrafo curto]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "1b2faca5-1706-4b03-81b0-a7499ccff90a",
+      "name": "Urbanista"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Urbanista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Urbanista",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c465b8af-0582-45da-b708-2e4b89f39da3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
+  },
+  "nodeGroups": [],
+  "id": "UkLHeH8XIuSLsrnv",
+  "tags": []
+}

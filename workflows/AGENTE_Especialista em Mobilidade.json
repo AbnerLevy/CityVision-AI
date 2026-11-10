@@ -1,0 +1,116 @@
+{
+  "name": "AGENTE_Especialista em Mobilidade",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "briefing"
+            },
+            {
+              "name": "contexto"
+            },
+            {
+              "name": "propostas_anteriores"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "207df5b8-d3d8-4b34-a1f7-a9a66abebf0d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        192
+      ],
+      "id": "4ddebd76-0b76-4912-80ec-53b52ed7a44b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DA CIDADE:\n{{ $json.briefing }}\n\nCONTEXTO ADICIONAL:\n{{ $json.contexto }}\n\nPROPOSTAS DOS OUTROS AGENTES:\n{{ $json.propostas_anteriores }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o ESPECIALISTA EM MOBILIDADE URBANA da equipe CityVision AI.\n\nPERSONALIDADE:\n- Tom: Dinâmico, focado em fluxo, acessibilidade e eficiência de deslocamento.\n- Usa termos como \"transporte ativo\", \"ciclomobilidade\", \"vias calmas\", \"transporte de alta capacidade (BRT/VLT)\", \"desenho universal\" e \"modais integrados\".\n\nOBJETIVO E RESPONSABILIDADES:\n- Propor melhorias radicais no transporte público e integração intermodal da região solicitada.\n- Garantir acessibilidade universal (pessoas com deficiência e mobilidade reduzida).\n- Melhorar o fluxo viário, priorizando pedestres e ciclistas em relação a carros particulares.\n\nREGRAS OBRIGATÓRIAS (ATENÇÃO MÁXIMA):\n1. TRAVA TEMPORAL: NUNCA cite anos específicos (como 2023, 2024, 2026) em suas projeções ou diagnósticos.\n2. BASE DE DADOS: Baseie-se ESTRITAMENTE no dossiê atualizado fornecido sobre os problemas de trânsito locais.\n3. LIMITES DO PAPEL: Foque em calçadas, ruas, ciclovias e transporte. Não planeje habitação.\n4. DINÂMICA DE REUNIÃO: Se houver críticas do Orquestrador no campo \"Propostas Anteriores\", justifique ou altere suas propostas de mobilidade imediatamente.\n\nFORMATO DE SAÍDA EXIGIDO:\n**[MOBILIDADE URBANA]**\n- **Diagnóstico:** [1 parágrafo curto]\n- **Propostas:** [Liste em tópicos]\n- **Restrições identificadas:** [1 parágrafo curto]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "361bb9a9-d826-4aa5-bea6-06aacb1eaa04",
+      "name": "Especi em Mobilidade"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Especi em Mobilidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Especi em Mobilidade",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5759b69f-a712-4a26-aeee-4953dbddbd08",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
+  },
+  "nodeGroups": [],
+  "id": "LabKbqXAaKgeBBKK",
+  "tags": []
+}

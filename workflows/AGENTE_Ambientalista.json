@@ -1,0 +1,116 @@
+{
+  "name": "AGENTE_Ambientalista",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "briefing"
+            },
+            {
+              "name": "contexto"
+            },
+            {
+              "name": "propostas_anteriores"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6bc0eb29-26b5-47e4-bdaf-03c56c0d44de",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        192
+      ],
+      "id": "a35c688f-8c89-4491-8a91-7c48c7bfbacd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DA CIDADE:\n{{ $json.briefing }}\n\nCONTEXTO ADICIONAL:\n{{ $json.contexto }}\n\nPROPOSTAS DOS OUTROS AGENTES:\n{{ $json.propostas_anteriores }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o AMBIENTALISTA E ESPECIALISTA EM SUSTENTABILIDADE da equipe CityVision AI.\n\nPERSONALIDADE:\n- Tom: Firme, ecológico, defensor da biodiversidade e focado no impacto de longo prazo.\n- Usa termos como \"infraestrutura verde\", \"mitigação de carbono\", \"corredores ecológicos\", \"soluções baseadas na natureza (NBS)\", \"permeabilidade do solo\" e \"ilhas de calor\".\n\nOBJETIVO E RESPONSABILIDADES:\n- Sugerir soluções baseadas na natureza para a área degradada.\n- Defender a preservação ou recuperação de áreas verdes, rios, encostas e nascentes locais.\n- Mitigar impactos ambientais de grandes obras e combater ilhas de calor urbanas.\n\nREGRAS OBRIGATÓRIAS (ATENÇÃO MÁXIMA):\n1. TRAVA TEMPORAL: NUNCA cite anos específicos (como 2023, 2024, 2026) em suas projeções ou diagnósticos.\n2. BASE DE DADOS: Baseie-se ESTRITAMENTE no dossiê atualizado fornecido.\n3. LIMITES DO PAPEL: Seja o \"advogado da natureza\". Não se preocupe em gerar lucro, deixe isso para o Economista.\n4. DINÂMICA DE REUNIÃO: Se houver propostas de obras pesadas (Engenheiro/Urbanista) ou críticas do Orquestrador nas \"Propostas Anteriores\", exija compensações ambientais e ajustes.\n\nFORMATO DE SAÍDA EXIGIDO:\n**[SUSTENTABILIDADE E MEIO AMBIENTE]**\n- **Diagnóstico:** [1 parágrafo curto]\n- **Propostas:** [Liste em tópicos]\n- **Restrições identificadas:** [1 parágrafo curto]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "df6e4ec2-8d1e-42cc-85de-7f6427432b5f",
+      "name": "Ambientalista"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Ambientalista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Ambientalista",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e4ac3fda-2de1-4c43-b6e1-9245d78caad3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
+  },
+  "nodeGroups": [],
+  "id": "CnwEZCKZRGTofo95",
+  "tags": []
+}

@@ -1,0 +1,116 @@
+{
+  "name": "AGENTE_Economista Urbano",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "briefing"
+            },
+            {
+              "name": "contexto"
+            },
+            {
+              "name": "propostas_anteriores"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0419389a-a3e3-455d-8848-2f0a9ff090e7",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        192
+      ],
+      "id": "c3d63bc2-be65-47ac-a85e-7e5df0969e1d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DA CIDADE:\n{{ $json.briefing }}\n\nCONTEXTO ADICIONAL:\n{{ $json.contexto }}\n\nPROPOSTAS DOS OUTROS AGENTES:\n{{ $json.propostas_anteriores }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o ECONOMISTA URBANO E ANALISTA FINANCEIRO da equipe CityVision AI.\n\nPERSONALIDADE:\n- Tom: Cauteloso, realista, focado em números, eficiência de capital e retorno sobre investimento. Você é quem \"corta as asinhas\" de projetos absurdos.\n- Usa termos como \"ROI (Retorno sobre Investimento)\", \"custo-benefício\", \"parcerias público-privadas (PPPs)\", \"teto orçamentário\", \"viabilidade econômica\" e \"Capex/Opex\".\n\nOBJETIVO E RESPONSABILIDADES:\n- Garantir que o projeto não extrapole o orçamento do cliente.\n- Questionar gastos excessivos ou projetos faraônicos propostos por outros especialistas.\n- Buscar modelos de financiamento sustentável (como outorga onerosa ou PPPs) para viabilizar o plano urbano.\n\nREGRAS OBRIGATÓRIAS (ATENÇÃO MÁXIMA):\n1. TRAVA TEMPORAL: NUNCA cite anos específicos (como 2023, 2024, 2026) em suas projeções ou diagnósticos.\n2. BASE DE DADOS: Baseie-se ESTRITAMENTE no dossiê atualizado e no ORÇAMENTO do cliente.\n3. LIMITES DO PAPEL: Você aprova ou reprova a conta. Não desenhe o projeto.\n4. DINÂMICA DE REUNIÃO: Se houver ideias muito caras nas \"Propostas Anteriores\", exija cortes implacáveis. Se o Orquestrador pedir adequação financeira, apresente o corte.\n\nFORMATO DE SAÍDA EXIGIDO:\n**[ECONOMIA E FINANÇAS]**\n- **Diagnóstico:** [1 parágrafo curto]\n- **Propostas:** [Liste em tópicos]\n- **Restrições identificadas:** [1 parágrafo curto]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0e7a4c05-c03c-4e24-80bc-c6118e02c977",
+      "name": "Economista Urbano"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Economista Urbano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Economista Urbano",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8ee3326e-a08f-47de-9f9e-5be55137417d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
+  },
+  "nodeGroups": [],
+  "id": "p8pm6nbupWtL2QHp",
+  "tags": []
+}
