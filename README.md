@@ -52,7 +52,7 @@ Cada agente possui um prompt especializado ("System Message") com restrições r
 ## 📊 Exemplo de Output Real (Estudo de Caso: Recife - Rua Imperial)
 O sistema foi testado para requalificação de vazios urbanos e problemas de drenagem, gerando automaticamente um plano diretor orçado em R$ 42.500.000,00, integrando engenharia de macrodrenagem, ciclovias, áreas verdes (NBS) e conselhos comunitários participativos.
 
-👉 **[Clique aqui para ler o Relatório Executivo Completo]([./docs/output_rua_imperial.md](https://github.com/AbnerLevy/CityVision-AI/blob/main/docs/teste_output.md))**
+👉 **[Clique aqui para ler o Relatório Executivo Completo](./docs/teste_output.md)**
 
 ---
 
