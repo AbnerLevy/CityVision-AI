@@ -49,10 +49,17 @@ Cada agente possui um prompt especializado ("System Message") com restrições r
 
 ---
 
-## 📊 Exemplo de Output Real (Estudo de Caso: Recife - Rua Imperial)
+## 📊 Exemplos de Output Real (Estudos de Caso)
+
+### 1. Recife - Rua Imperial
 O sistema foi testado para requalificação de vazios urbanos e problemas de drenagem, gerando automaticamente um plano diretor orçado em R$ 42.500.000,00, integrando engenharia de macrodrenagem, ciclovias, áreas verdes (NBS) e conselhos comunitários participativos.
 
 👉 **[Clique aqui para ler o Relatório Executivo Completo](./docs/teste_output.md)**
+
+### 2. Olinda - Sítio Histórico e Encostas
+O sistema foi testado para a contenção de encostas e revitalização urbana, gerando automaticamente um plano diretor orçado em R$ 150.000.000,00, integrando engenharia geotécnica, drenagem de ladeiras e preservação patrimonial.
+
+👉 **[Clique aqui para ler o Relatório Executivo Completo](./docs/teste_output2.md)**
 
 ---
 
