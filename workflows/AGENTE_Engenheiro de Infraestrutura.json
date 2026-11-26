@@ -1,5 +1,4 @@
 {
-  "name": "AGENTE_Engenheiro de Infraestrutura",
   "nodes": [
     {
       "parameters": {
@@ -35,7 +34,10 @@
           "cachedResultName": "google/gemma-3-4b"
         },
         "responsesApiEnabled": false,
-        "options": {}
+        "options": {
+          "maxTokens": 350,
+          "temperature": 0.2
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
@@ -75,7 +77,6 @@
       "name": "Engenheiro de Infra"
     }
   ],
-  "pinData": {},
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -100,17 +101,9 @@
       ]
     }
   },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate"
-  },
-  "versionId": "93aef389-148b-42da-82b7-5d189a897a59",
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
-  },
-  "nodeGroups": [],
-  "id": "AGK8vtbB7YvUw73s",
-  "tags": []
+  }
 }
