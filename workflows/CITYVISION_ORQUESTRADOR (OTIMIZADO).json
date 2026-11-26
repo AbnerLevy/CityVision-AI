@@ -1,189 +1,23 @@
 {
-  "name": "CITYVISION_ORQUESTRADOR V2",
   "nodes": [
-    {
-      "parameters": {
-        "formTitle": "CityVision AI — Planejamento Urbano",
-        "formDescription": "Descreva a área urbana que deseja revitalizar. Nossa equipe de agentes de IA elaborará propostas sustentáveis.",
-        "formFields": {
-          "values": [
-            {
-              "fieldLabel": "Descreva a cidade ou região",
-              "fieldType": "textarea",
-              "fieldName": "briefing",
-              "placeholder": "Nome do local (bairro, rua, cidade). Descreva um pouco sobre o local"
-            },
-            {
-              "fieldLabel": "Informações complementares",
-              "fieldType": "textarea",
-              "fieldName": "contexto",
-              "placeholder": "Informe o orçamento para o projeto e descreva sua idéia para que nossos agentes possam trabalhar em cima dela."
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.formTrigger",
-      "typeVersion": 2.6,
-      "position": [
-        -80,
-        448
-      ],
-      "id": "558f8f5a-7346-46fe-bc80-98a1bca87ecd",
-      "name": "On form submission",
-      "webhookId": "e8020dcc-9ef7-4de3-9234-074a0601960b"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "39c16fdf-6a34-4b3f-8183-61b2c7a8dd4c",
-              "name": "briefing",
-              "value": "={{ $json[\"briefing\"] }}",
-              "type": "string"
-            },
-            {
-              "id": "126d0212-0072-4b6b-9541-e00c4762f6fe",
-              "name": "contexto",
-              "value": "={{ $json[\"contexto\"] }}",
-              "type": "string"
-            },
-            {
-              "id": "0efe26cd-088b-467f-a833-6cf63d588f6f",
-              "name": "propostas_anteriores",
-              "value": "Nenhuma proposta anterior",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.5,
-      "position": [
-        144,
-        448
-      ],
-      "id": "b688c491-be36-4f7c-a155-8ddbf7028a24",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "UkLHeH8XIuSLsrnv",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/UkLHeH8XIuSLsrnv",
-          "cachedResultName": "AGENTE_URBANISTA"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        1280,
-        0
-      ],
-      "id": "cd0d40ee-3e3b-41d8-b7d9-9e021230295a",
-      "name": "Call 'AGENTE_URBANISTA'"
-    },
-    {
-      "parameters": {
-        "numberInputs": 6
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        1632,
-        400
-      ],
-      "id": "bc62ac47-3e37-4b5d-843e-6840446e015c",
-      "name": "Merge"
-    },
-    {
-      "parameters": {
-        "fieldsToAggregate": {
-          "fieldToAggregate": [
-            {
-              "fieldToAggregate": "text"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        1904,
-        464
-      ],
-      "id": "df807868-7554-41b7-b875-722cde21bc30",
-      "name": "Aggregate"
-    },
     {
       "parameters": {
         "query": "={{ $json.briefing.trim() }} infraestrutura OR problemas urbanos OR notícias locais",
         "options": {
           "include_answer": "basic",
-          "max_results": 4,
+          "max_results": 3,
           "search_depth": "basic",
           "topic": "general"
         }
       },
+      "id": "672c0974-6eb2-4a03-8dda-6c7c53d80262",
+      "name": "Search the web",
       "type": "@tavily/n8n-nodes-tavily.tavily",
       "typeVersion": 2.1,
       "position": [
-        368,
-        448
+        -208,
+        336
       ],
-      "id": "19201eae-8ddf-4315-8c74-aec15dff9b85",
-      "name": "Search the web",
       "credentials": {
         "tavilyApi": {
           "id": "6UybJ4wl4Ti0qIlr",
@@ -200,16 +34,19 @@
           "cachedResultName": "google/gemma-3-4b"
         },
         "responsesApiEnabled": false,
-        "options": {}
+        "options": {
+          "maxTokens": 300,
+          "temperature": 0.1
+        }
       },
+      "id": "6af8b7ac-86a4-4a0a-bf90-746f12859993",
+      "name": "OpenAI Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        592,
-        624
+        32,
+        512
       ],
-      "id": "6893a0bb-8275-4ef5-a3c2-ae73084c03fe",
-      "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
           "id": "OSWlrILZhrjcnfPD",
@@ -224,68 +61,85 @@
         "messages": {
           "messageValues": [
             {
-              "message": "=Você é o Agente Pesquisador do CityVision AI. \n\nSua tarefa é ler os resultados brutos de pesquisa e criar um dossiê em PORTUGUÊS (PT-BR) sobre a situação urbana do local solicitado.\n\nREGRAS OBRIGATÓRIAS:\n1. RESPONDA APENAS EM PORTUGUÊS (PT-BR).\n2. Caso os dados sejam bons e sobre o local correto, escreva um resumo em até 3 parágrafos focando APENAS na infraestrutura e nos problemas do local solicitado.\n3. IGNORE QUALQUER DADO que não seja sobre o local exato (ignore informações de outras cidades, empresas de engenharia ou comércios aleatórios).\n4.AVALIAÇÃO DE QUALIDADE: Se os resultados falarem de cidades diferentes, empresas aleatórias ou não contiverem dados reais sobre os problemas urbanos do local exato, NÃO tente inventar um resumo. Responda APENAS com a palavra: DADOS_INUTEIS\n5. Não diga \"com base nos resultados\" nem converse comigo. Apenas entregue o dossiê."
+              "message": "=Você é o Agente Pesquisador do CityVision AI.\nSua tarefa é ler os resultados brutos de pesquisa e criar um dossiê curto em PORTUGUÊS (PT-BR) sobre a situação urbana do local solicitado.\n\nREGRAS OBRIGATÓRIAS:\n1. RESPONDA APENAS EM PORTUGUÊS (PT-BR).\n2. Caso os dados sejam bons e sobre o local correto, escreva um resumo de no máximo 2 parágrafos curtos focando APENAS na infraestrutura e nos problemas do local solicitado.\n3. IGNORE QUALQUER DADO que não seja sobre o local exato e NUNCA cite anos ou datas.\n4. AVALIAÇÃO DE QUALIDADE: Se os resultados falarem de cidades diferentes, empresas aleatórias ou não contiverem dados reais sobre os problemas urbanos do local exato, responda APENAS com a palavra: DADOS_INUTEIS\n5. Não converse comigo. Entregue apenas o dossiê ou DADOS_INUTEIS."
             }
           ]
         },
         "batching": {}
       },
+      "id": "f4f4fbc9-7a51-4342-9785-94d4370fa4a2",
+      "name": "Pesquisador",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.9,
       "position": [
-        592,
-        448
-      ],
-      "id": "ae43f876-9f99-4d20-965a-8c4e19c072e8",
-      "name": "Pesquisador"
+        32,
+        336
+      ]
     },
     {
       "parameters": {
-        "model": {
+        "workflowId": {
           "__rl": true,
-          "value": "google/gemma-3-4b",
+          "value": "UkLHeH8XIuSLsrnv",
           "mode": "list",
-          "cachedResultName": "google/gemma-3-4b"
+          "cachedResultUrl": "/workflow/UkLHeH8XIuSLsrnv",
+          "cachedResultName": "AGENTE_URBANISTA"
         },
-        "responsesApiEnabled": false,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        2128,
-        608
-      ],
-      "id": "1be228a2-9f01-475c-8eac-e7290ae7d3eb",
-      "name": "OpenAI Chat Model1",
-      "credentials": {
-        "openAiApi": {
-          "id": "OSWlrILZhrjcnfPD",
-          "name": "OpenAI account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=PEDIDO ORIGINAL DO CLIENTE:\n{{ $('Edit Fields').first().json.briefing }}\n\nPROPOSTAS DOS ESPECIALISTAS NA MESA:\n{{ $json.text }}",
-        "messages": {
-          "messageValues": [
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
             {
-              "message": "=Você é o Orquestrador-Chefe do CityVision AI. \nATENÇÃO: Você NÃO é um assistente de IA avaliando um texto. Você é um gerente em uma reunião e deve falar DIRETAMENTE com a sua equipe de especialistas.\n\nO usuário enviou as propostas dos especialistas. Sua única tarefa é ler o que eles propuseram e dar uma bronca técnica, apontando as falhas e exigindo ajustes.\n\nREGRAS OBRIGATÓRIAS:\n1. NUNCA saia do personagem. NUNCA faça comentários sobre o prompt.\n2. Fale em primeira pessoa como chefe (ex: \"Equipe, li as propostas e...\", \"Urbanista, sua ideia de...\").\n3. Identifique conflitos (ex: a praça custa muito, o ambientalista quer área verde onde o urbanista quer prédio).\n4. Estabeleça critérios rígidos de viabilidade e orçamento.\n5. Siga EXATAMENTE o formato de saída abaixo. Não adicione textos extras, saudações ou encerramentos.\n\nFORMATO DE SAÍDA EXIGIDO:\n**Análise Geral do Orquestrador:**\n[Escreva 1 parágrafo com a sua visão geral sobre o que a equipe entregou]\n\n**Conflitos e Problemas Identificados:**\n[Liste em bullet points os conflitos entre os agentes ou ideias que fogem do orçamento]\n\n**Ordens para a Rodada 2:**\n[Escreva pedidos diretos para os especialistas ajustarem na próxima rodada]"
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
-          ]
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
         },
-        "batching": {}
+        "options": {
+          "waitForSubWorkflow": true
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.9,
+      "id": "bee1e7f4-7c0b-465e-a41f-8a5080ba348e",
+      "name": "Call 'AGENTE_URBANISTA'",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
       "position": [
-        2128,
-        464
-      ],
-      "id": "627e65bd-a342-48ba-9b3a-e902f39f4e4a",
-      "name": "Orquestrador"
+        720,
+        -112
+      ]
     },
     {
       "parameters": {
@@ -343,144 +197,14 @@
           "waitForSubWorkflow": true
         }
       },
+      "id": "7a4859fb-e557-4fac-8a7a-83778f10475b",
+      "name": "Call 'AGENTE_Engenheiro de Infraestrutura'",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.4,
       "position": [
-        1296,
-        224
-      ],
-      "id": "08a962dd-4da0-4c25-9169-850bdd4587c4",
-      "name": "Call 'AGENTE_Engenheiro de Infraestrutura'"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "CnwEZCKZRGTofo95",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/CnwEZCKZRGTofo95",
-          "cachedResultName": "AGENTE_Ambientalista"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        1280,
-        672
-      ],
-      "id": "dd0dbdfb-4d50-4864-bd97-58e698b771de",
-      "name": "Call 'AGENTE_Ambientalista'"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "XF5hfdmZXYmbzoHE",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/XF5hfdmZXYmbzoHE",
-          "cachedResultName": "AGENTE_Sociólogo Urbano"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        1280,
-        912
-      ],
-      "id": "9255d1ca-57eb-4267-922d-11e6d68b5b67",
-      "name": "Call 'AGENTE_Sociólogo Urbano'"
+        736,
+        112
+      ]
     },
     {
       "parameters": {
@@ -538,14 +262,144 @@
           "waitForSubWorkflow": true
         }
       },
+      "id": "a7a227d3-e0f6-4593-b194-8e4b2586f91a",
+      "name": "Call 'AGENTE_Espec em Mobilidade'",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.4,
       "position": [
-        1296,
-        448
-      ],
-      "id": "f63c5f5e-f8bd-4a85-b502-c9a0dad9399b",
-      "name": "Call 'AGENTE_Espec em Mobilidade'"
+        736,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "CnwEZCKZRGTofo95",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/CnwEZCKZRGTofo95",
+          "cachedResultName": "AGENTE_Ambientalista"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "677cdd5c-7a00-48a1-b232-6bd7e8f84c7c",
+      "name": "Call 'AGENTE_Ambientalista'",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "XF5hfdmZXYmbzoHE",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XF5hfdmZXYmbzoHE",
+          "cachedResultName": "AGENTE_Sociólogo Urbano"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "d8446446-9c9f-43c8-8e40-e90301520625",
+      "name": "Call 'AGENTE_Sociólogo Urbano'",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        800
+      ]
     },
     {
       "parameters": {
@@ -603,14 +457,1202 @@
           "waitForSubWorkflow": true
         }
       },
+      "id": "a1df2573-e794-42ff-a860-52ee3e5487c0",
+      "name": "Call 'AGENTE_Economista Urbano'",
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.4,
       "position": [
-        1280,
-        1120
+        720,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "id": "ed23aba1-7e9a-4a77-b60e-4b1ac8769d09",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1072,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "67bc5f04-23d1-4b5f-8bd1-43cc4726bda7",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "maxTokens": 350,
+          "temperature": 0.2
+        }
+      },
+      "id": "46967311-6cb6-43e6-b4e4-2e1b5bdf8647",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1568,
+        496
       ],
-      "id": "471ee865-5f57-4671-91d1-a0922ef7e057",
-      "name": "Call 'AGENTE_Economista Urbano'"
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DO LOCAL:\n{{ $('Edit Fields Rodada 1').first().json.briefing }}\n\nCONTEXTO E ORÇAMENTO DO CLIENTE:\n{{ $('Edit Fields Rodada 1').first().json.contexto }}\n\nPROPOSTAS DOS ESPECIALISTAS NA RODADA 1:\n{{ $json.text.join('\\n\\n') }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o Orquestrador-Chefe do CityVision AI.\nSua missão é ler o pedido do cliente (incluindo o orçamento/contexto) e as propostas dos 6 especialistas, identificar conflitos de escopo ou excesso de gastos, e emitir uma ATA DIRETIVA CURTA para a próxima rodada.\n\nREGRAS OBRIGATÓRIAS:\n1. PROIBIÇÃO DE INVENÇÃO DE CIFRAS: Se o cliente NÃO informou um valor em Reais (R$) no Contexto, PROÍBA a equipe de inventar valores monetários e exija adequação qualitativa de baixo custo. Se o cliente informou um teto orçamentário, exija que a equipe respeite esse valor exato.\n2. TRAVA TEMPORAL: NUNCA cite anos específicos (ex: 2023, 2024, 2026).\n3. CONCISÃO: Máximo de 200 palavras no total.\n\nFORMATO DE SAÍDA EXIGIDO:\n**Síntese do Projeto Aprovada até Agora:**\n[1 parágrafo curto resumindo as soluções técnicas válidas propostas pelos 6 agentes]\n\n**Conflitos e Cortes Obrigatórios:**\n- [Conflito ou corte 1]\n- [Conflito ou corte 2]\n\n**Ordens Diretas para Ajuste:**\n- [Ordem objetiva para os agentes corrigirem na próxima rodada]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "b6a44dee-1c09-4e58-a594-38e4f52a488b",
+      "name": "Orquestrador",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1568,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "53cdc05e-2420-4008-b0f5-ffee6a55e53e",
+              "name": "briefing",
+              "value": "={{ $('Edit Fields Rodada 1').first().json.briefing }}",
+              "type": "string"
+            },
+            {
+              "id": "af15eeef-a4eb-4792-a2a0-799fd77633bd",
+              "name": "contexto",
+              "value": "={{ $('Edit Fields Rodada 1').first().json.contexto }}",
+              "type": "string"
+            },
+            {
+              "id": "1b3117aa-70ad-466b-ab50-a35a4c2bc228",
+              "name": "propostas_anteriores",
+              "value": "=[ATA E ORDENS DO ORQUESTRADOR PARA A RODADA 2]:\n{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cd98f62d-e1fc-4cfc-ad4e-848b8fb9ed27",
+      "name": "Edit Fields Rodada 2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2112,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "UkLHeH8XIuSLsrnv",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/UkLHeH8XIuSLsrnv",
+          "cachedResultName": "AGENTE_URBANISTA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "9a25a366-be2e-4259-8f36-cf699d1f1059",
+      "name": "Call 'AGENTE_URBANISTA'1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        2544,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "AGK8vtbB7YvUw73s",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/AGK8vtbB7YvUw73s",
+          "cachedResultName": "AGENTE_Engenheiro de Infraestrutura"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "7368cec9-ca35-466e-8434-31b1d294fdb8",
+      "name": "Call 'AGENTE_Engenheiro de Infraestrutura'1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        2560,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "LabKbqXAaKgeBBKK",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/LabKbqXAaKgeBBKK",
+          "cachedResultName": "AGENTE_Especialista em Mobilidade"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "e95e25a0-27a0-4752-a9eb-183585dbae05",
+      "name": "Call 'AGENTE_Espec em Mobilidade'1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        2560,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "CnwEZCKZRGTofo95",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/CnwEZCKZRGTofo95",
+          "cachedResultName": "AGENTE_Ambientalista"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "c7a7feea-155c-4577-98c2-aef34654c4ee",
+      "name": "Call 'AGENTE_Ambientalista'1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        2544,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "XF5hfdmZXYmbzoHE",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XF5hfdmZXYmbzoHE",
+          "cachedResultName": "AGENTE_Sociólogo Urbano"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "36a700af-414a-408e-911b-62afaf89da87",
+      "name": "Call 'AGENTE_Sociólogo Urbano'1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        2544,
+        816
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "p8pm6nbupWtL2QHp",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/p8pm6nbupWtL2QHp",
+          "cachedResultName": "AGENTE_Economista Urbano"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "e0e356d1-84ac-4df2-84df-e7ef6d69d025",
+      "name": "Call 'AGENTE_Economista Urbano'1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        2544,
+        1024
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "id": "ce02f3d2-7096-4ee9-8798-a059c463e258",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2928,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "55694533-b31e-4653-8f2c-8620b42f693c",
+      "name": "Aggregate1",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        3184,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "maxTokens": 350,
+          "temperature": 0.2
+        }
+      },
+      "id": "a8b31537-3aae-4d45-ab83-0a50e5006a50",
+      "name": "OpenAI Chat Model2",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        3424,
+        544
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DO LOCAL:\n{{ $('Edit Fields Rodada 1').first().json.briefing }}\n\nCONTEXTO E ORÇAMENTO DO CLIENTE:\n{{ $('Edit Fields Rodada 1').first().json.contexto }}\n\nPROPOSTAS AJUSTADAS NA RODADA 2:\n{{ $json.text.join('\\n\\n') }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o Orquestrador-Chefe do CityVision AI.\nSua missão é ler o pedido do cliente (incluindo o orçamento/contexto) e as propostas dos 6 especialistas, identificar conflitos de escopo ou excesso de gastos, e emitir uma ATA DIRETIVA CURTA para a próxima rodada.\n\nREGRAS OBRIGATÓRIAS:\n1. PROIBIÇÃO DE INVENÇÃO DE CIFRAS: Se o cliente NÃO informou um valor em Reais (R$) no Contexto, PROÍBA a equipe de inventar valores monetários e exija adequação qualitativa de baixo custo. Se o cliente informou um teto orçamentário, exija que a equipe respeite esse valor exato.\n2. TRAVA TEMPORAL: NUNCA cite anos específicos (ex: 2023, 2024, 2026).\n3. CONCISÃO: Máximo de 200 palavras no total.\n\nFORMATO DE SAÍDA EXIGIDO:\n**Síntese do Projeto Aprovada até Agora:**\n[1 parágrafo curto resumindo as soluções técnicas válidas propostas pelos 6 agentes]\n\n**Conflitos e Cortes Obrigatórios:**\n- [Conflito ou corte 1]\n- [Conflito ou corte 2]\n\n**Ordens Diretas para Ajuste:**\n- [Ordem objetiva para os agentes corrigirem na próxima rodada]"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "d3cef5b0-ccfc-4687-812b-64049415e2ed",
+      "name": "Orquestrador1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        3424,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "53cdc05e-2420-4008-b0f5-ffee6a55e53e",
+              "name": "briefing",
+              "value": "={{ $('Edit Fields Rodada 1').first().json.briefing }}",
+              "type": "string"
+            },
+            {
+              "id": "af15eeef-a4eb-4792-a2a0-799fd77633bd",
+              "name": "contexto",
+              "value": "={{ $('Edit Fields Rodada 1').first().json.contexto }}",
+              "type": "string"
+            },
+            {
+              "id": "1b3117aa-70ad-466b-ab50-a35a4c2bc228",
+              "name": "propostas_anteriores",
+              "value": "=[DIRETRIZES FINAIS DO ORQUESTRADOR PARA CONSENSO]:\n{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "76009a4d-bbbe-4704-b729-202e5753aa30",
+      "name": "Edit Fields Rodada 3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3808,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "UkLHeH8XIuSLsrnv",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/UkLHeH8XIuSLsrnv",
+          "cachedResultName": "AGENTE_URBANISTA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "d5160af7-93a0-41fb-8f82-552c47891e17",
+      "name": "Call 'AGENTE_URBANISTA'2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        4320,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "AGK8vtbB7YvUw73s",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/AGK8vtbB7YvUw73s",
+          "cachedResultName": "AGENTE_Engenheiro de Infraestrutura"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "ae9a660d-0a96-47fe-802f-91a9716d1c0d",
+      "name": "Call 'AGENTE_Engenheiro de Infraestrutura'2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        4336,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "LabKbqXAaKgeBBKK",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/LabKbqXAaKgeBBKK",
+          "cachedResultName": "AGENTE_Especialista em Mobilidade"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "e89ff936-f198-40f4-84ed-995d7393ceb3",
+      "name": "Call 'AGENTE_Espec em Mobilidade'2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        4336,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "CnwEZCKZRGTofo95",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/CnwEZCKZRGTofo95",
+          "cachedResultName": "AGENTE_Ambientalista"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "f10fe108-d542-4e63-8489-9b42cca31dd8",
+      "name": "Call 'AGENTE_Ambientalista'2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        4320,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "XF5hfdmZXYmbzoHE",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XF5hfdmZXYmbzoHE",
+          "cachedResultName": "AGENTE_Sociólogo Urbano"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "06434a46-033d-4ded-81e9-f269ed5c34c6",
+      "name": "Call 'AGENTE_Sociólogo Urbano'2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        4320,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "p8pm6nbupWtL2QHp",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/p8pm6nbupWtL2QHp",
+          "cachedResultName": "AGENTE_Economista Urbano"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "briefing": "={{ $json.briefing }}",
+            "contexto": "={{ $json.contexto }}",
+            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "briefing",
+              "displayName": "briefing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "contexto",
+              "displayName": "contexto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "propostas_anteriores",
+              "displayName": "propostas_anteriores",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "94ebd409-3587-4851-921f-72fbd2c4450e",
+      "name": "Call 'AGENTE_Economista Urbano'2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        4336,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "id": "0fdd36cd-5c4c-4ee1-a993-c7c698edc86e",
+      "name": "Merge2",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4752,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9c8cf069-5b41-4357-acd4-f3036448bb61",
+      "name": "Aggregate2",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4992,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "maxTokens": 350,
+          "temperature": 0.2
+        }
+      },
+      "id": "9c5fabff-5d3f-488d-b5bc-1e0a877e93ed",
+      "name": "OpenAI Chat Model3",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        5232,
+        560
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=BRIEFING DO CLIENTE:\n{{ $('Edit Fields Rodada 1').first().json.briefing }}\n\nCONTEXTO E ORÇAMENTO:\n{{ $('Edit Fields Rodada 1').first().json.contexto }}\n\nPROPOSTAS FINAIS APÓS O DEBATE DA EQUIPE:\n{{ $json.text.join('\\n\\n') }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o Orquestrador-Chefe do CityVision AI na Rodada 3 (Consenso Final).\nValide as propostas finais frente ao contexto/orçamento do cliente e emita a APROVAÇÃO OFICIAL executiva destacando os pontos acordados por área. NUNCA invente valores em Reais (R$) não informados pelo cliente e NUNCA cite anos ou datas."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "7fa52731-c2a6-46ea-967b-b92ab6fd54f2",
+      "name": "Orquestrador2",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        5232,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemma-3-4b",
+          "mode": "list",
+          "cachedResultName": "google/gemma-3-4b"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "maxTokens": 900,
+          "temperature": 0.2
+        }
+      },
+      "id": "6143bbc2-c0c2-44bc-a9a1-e7e569c8ef0e",
+      "name": "OpenAI Chat Model4",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        5568,
+        544
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "OSWlrILZhrjcnfPD",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=LOCAL SOLICITADO:\n{{ $('Edit Fields Rodada 1').first().json.briefing }}\n\nBRIEFING E ORÇAMENTO ORIGINAL:\n{{ $('Edit Fields Rodada 1').first().json.contexto }}\n\nPROPOSTAS TÉCNICAS FINAIS DOS 6 ESPECIALISTAS:\n{{ $('Aggregate2').first().json.text.join('\\n\\n') }}\n\nAPROVAÇÃO FINAL DO ORQUESTRADOR:\n{{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Você é o APRESENTADOR EXECUTIVO da equipe CityVision AI.\nSua tarefa é redigir o Relatório Executivo Final consolidando estritamente as propostas técnicas finais da equipe e o parecer do Orquestrador.\n\nREGRAS OBRIGATÓRIAS ANTI-ALUCINAÇÃO:\n1. ZERO INVENÇÃO DE ORÇAMENTO: Verifique o campo \"BRIEFING E ORÇAMENTO ORIGINAL\". Se o usuário informou valores em Reais (R$), apresente-os fielmente. Se o usuário NÃO informou orçamento numérico, NUNCA invente valores em Reais (como R$ 42 milhões ou similares); nesse caso, descreva na Seção 6 a estratégia de viabilização por fases (Curto, Médio e Longo Prazo) e fontes de financiamento (PPPs, fundos municipais), declarando explicitamente que o orçamento executivo quantitativo dependerá de levantamento topográfico e licitatório local.\n2. PROIBIDO PLACEHOLDERS: Nunca escreva colchetes genéricos como \"[Inserir Valor]\" ou \"[Nome do Local]\".\n3. TRAVA TEMPORAL: NUNCA cite anos específicos (2023, 2024, 2026).\n\nFORMATO DE SAÍDA EXIGIDO:\n# PLANO DIRETOR DE REVITALIZAÇÃO URBANA: [Nome Real do Local extraído do Briefing]\n\n## 1. Conceito Mestre e Diagnóstico Territorial\n## 2. Intervenções Prioritárias de Engenharia e Infraestrutura\n## 3. Mobilidade Ativa e Acessibilidade\n## 4. Sustentabilidade e Soluções Baseadas na Natureza (NBS)\n## 5. Impacto Social e Inclusão Comunitária\n## 6. Viabilidade Econômica e Estratégia de Implementação"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "709f05b4-9cee-43cc-9404-94e3c8a24b6f",
+      "name": "Apresentador",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        5568,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39c16fdf-6a34-4b3f-8183-61b2c7a8dd4c",
+              "name": "briefing",
+              "value": "={{ $json.local_regiao }}",
+              "type": "string"
+            },
+            {
+              "id": "126d0212-0072-4b6b-9541-e00c4762f6fe",
+              "name": "contexto",
+              "value": "=MOTIVO DA REVITALIZAÇÃO:\n{{ $json.motivo }}\n\nPROPOSTA E CONDICIONANTES:\n{{ $json.detalhes_proposta }}\n\nORÇAMENTO ESTIMADO:\n{{ $json.orcamento_estimado }}",
+              "type": "string"
+            },
+            {
+              "id": "0efe26cd-088b-467f-a833-6cf63d588f6f",
+              "name": "propostas_anteriores",
+              "value": "Nenhuma proposta anterior",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -432,
+        336
+      ],
+      "id": "849893af-8998-480d-b6f7-4ad736678699",
+      "name": "Edit Fields"
     },
     {
       "parameters": {
@@ -625,7 +1667,7 @@
             {
               "id": "e5da68da-befb-4bc7-b708-68d0a87d4eed",
               "name": "contexto",
-              "value": "=IDEIA E ORÇAMENTO DO CLIENTE:\n{{ $('Edit Fields').first().json.contexto }}\n\nCONTEXTO ATUALIZADO DA REGIÃO:\n{{ $json.text.includes('DADOS_INUTEIS') ? \"A pesquisa na internet não retornou dados úteis ou confiáveis sobre a região. Baseie suas propostas estritamente no briefing e na ideia inicial do cliente.\" : $json.text }}",
+              "value": "=MOTIVO, PROPOSTA E ORÇAMENTO DO CLIENTE:\n{{ $('Edit Fields').first().json.contexto }}\n\nCONTEXTO ATUALIZADO DA REGIÃO:\n{{ $json.text.includes('DADOS_INUTEIS') ? \"A pesquisa na internet não retornou dados úteis ou confiáveis sobre a região. Baseie suas propostas estritamente no local, motivo, proposta e orçamento informados pelo cliente.\" : $json.text }}",
               "type": "string"
             },
             {
@@ -641,1119 +1683,60 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        944,
-        448
+        416,
+        336
       ],
-      "id": "22563828-ddf4-4986-8d5f-4e36da4481fb",
+      "id": "88bf6192-528e-4525-b741-4de41755cffd",
       "name": "Edit Fields Rodada 1"
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
+        "formTitle": "CityVision AI — Planejamento Urbano",
+        "formDescription": "Descreva a área urbana que deseja revitalizar. Nossa equipe de agentes de IA elaborará propostas sustentáveis.",
+        "formFields": {
+          "values": [
             {
-              "id": "53cdc05e-2420-4008-b0f5-ffee6a55e53e",
-              "name": "briefing",
-              "value": "={{ $('Edit Fields').first().json.briefing }}",
-              "type": "string"
+              "fieldLabel": "Bairro e Cidade",
+              "fieldName": "local_regiao",
+              "placeholder": "ex: Santo Antônio - Recife",
+              "requiredField": true
             },
             {
-              "id": "af15eeef-a4eb-4792-a2a0-799fd77633bd",
-              "name": "contexto",
-              "value": "={{ $('Edit Fields').first().json.contexto }}",
-              "type": "string"
+              "fieldLabel": "Motivo:",
+              "fieldType": "textarea",
+              "fieldName": "motivo",
+              "placeholder": "Descreva o motivo: o que esta acontecendo na região para que você deseje a revitalização",
+              "requiredField": true
             },
             {
-              "id": "1b3117aa-70ad-466b-ab50-a35a4c2bc228",
-              "name": "propostas_anteriores",
-              "value": "=[PROPOSTAS DA RODADA 1] {{ $('Aggregate').first().json.text }}  [ORDENS DO ORQUESTRADOR PARA A RODADA 2] {{ $json.text }}",
-              "type": "string"
+              "fieldLabel": "Proposta:",
+              "fieldType": "textarea",
+              "fieldName": "detalhes_proposta",
+              "placeholder": "Descrição da ideia e condicionantes do local",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Orçamento:",
+              "fieldName": "orcamento_estimado",
+              "placeholder": "Orçamento estimado ou faixa de investimento",
+              "requiredField": true
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.5,
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
       "position": [
-        2672,
-        464
+        -640,
+        336
       ],
-      "id": "a037fa7a-5538-4eba-952a-32864a1c5838",
-      "name": "Edit Fields Rodada 2"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "UkLHeH8XIuSLsrnv",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/UkLHeH8XIuSLsrnv",
-          "cachedResultName": "AGENTE_URBANISTA"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        3104,
-        16
-      ],
-      "id": "45553d58-5ee1-4bd9-a17d-8b49a60b2371",
-      "name": "Call 'AGENTE_URBANISTA'1"
-    },
-    {
-      "parameters": {
-        "numberInputs": 6
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        3488,
-        416
-      ],
-      "id": "c1442675-df22-4230-8ac3-d81575590af4",
-      "name": "Merge1"
-    },
-    {
-      "parameters": {
-        "fieldsToAggregate": {
-          "fieldToAggregate": [
-            {
-              "fieldToAggregate": "text"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        3744,
-        480
-      ],
-      "id": "a6c5237d-6024-48f5-b100-3c79d27bcbf0",
-      "name": "Aggregate1"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "AGK8vtbB7YvUw73s",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/AGK8vtbB7YvUw73s",
-          "cachedResultName": "AGENTE_Engenheiro de Infraestrutura"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        3120,
-        240
-      ],
-      "id": "6bf1d6ca-9d3f-44e9-b68a-4ae93268f850",
-      "name": "Call 'AGENTE_Engenheiro de Infraestrutura'1"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "CnwEZCKZRGTofo95",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/CnwEZCKZRGTofo95",
-          "cachedResultName": "AGENTE_Ambientalista"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        3104,
-        688
-      ],
-      "id": "a711dc04-98e8-4307-8593-7a307c2dd6e0",
-      "name": "Call 'AGENTE_Ambientalista'1"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "XF5hfdmZXYmbzoHE",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/XF5hfdmZXYmbzoHE",
-          "cachedResultName": "AGENTE_Sociólogo Urbano"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        3104,
-        928
-      ],
-      "id": "d8156cd4-24d7-4331-a982-33cb769d6528",
-      "name": "Call 'AGENTE_Sociólogo Urbano'1"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "LabKbqXAaKgeBBKK",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/LabKbqXAaKgeBBKK",
-          "cachedResultName": "AGENTE_Especialista em Mobilidade"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        3120,
-        464
-      ],
-      "id": "e4890de7-d3c1-4c6c-92cb-63442614fa3a",
-      "name": "Call 'AGENTE_Espec em Mobilidade'1"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "p8pm6nbupWtL2QHp",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/p8pm6nbupWtL2QHp",
-          "cachedResultName": "AGENTE_Economista Urbano"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        3104,
-        1136
-      ],
-      "id": "a5166601-8c0d-4aed-9960-96acd79eddbf",
-      "name": "Call 'AGENTE_Economista Urbano'1"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "google/gemma-3-4b",
-          "mode": "list",
-          "cachedResultName": "google/gemma-3-4b"
-        },
-        "responsesApiEnabled": false,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        3984,
-        656
-      ],
-      "id": "c0c197b4-4194-40e7-b1d2-314d2b13258e",
-      "name": "OpenAI Chat Model2",
-      "credentials": {
-        "openAiApi": {
-          "id": "OSWlrILZhrjcnfPD",
-          "name": "OpenAI account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=PEDIDO ORIGINAL DO CLIENTE:\n{{ $('Edit Fields').first().json.briefing }}\n\nPROPOSTAS DOS ESPECIALISTAS NA MESA:\n{{ $json.text }}",
-        "messages": {
-          "messageValues": [
-            {
-              "message": "=Você é o Orquestrador-Chefe do CityVision AI. \nATENÇÃO: Você NÃO é um assistente de IA avaliando um texto. Você é um gerente em uma reunião e deve falar DIRETAMENTE com a sua equipe de especialistas.\n\nO usuário enviou as propostas dos especialistas. Sua única tarefa é ler o que eles propuseram e dar uma bronca técnica, apontando as falhas e exigindo ajustes.\n\nREGRAS OBRIGATÓRIAS:\n1. NUNCA saia do personagem. NUNCA faça comentários sobre o prompt.\n2. Fale em primeira pessoa como chefe (ex: \"Equipe, li as propostas e...\", \"Urbanista, sua ideia de...\").\n3. Identifique conflitos (ex: a praça custa muito, o ambientalista quer área verde onde o urbanista quer prédio).\n4. Estabeleça critérios rígidos de viabilidade e orçamento.\n5. Siga EXATAMENTE o formato de saída abaixo. Não adicione textos extras, saudações ou encerramentos.\n\nFORMATO DE SAÍDA EXIGIDO:\n**Análise Geral do Orquestrador:**\n[Escreva 1 parágrafo com a sua visão geral sobre o que a equipe entregou]\n\n**Conflitos e Problemas Identificados:**\n[Liste em bullet points os conflitos entre os agentes ou ideias que fogem do orçamento]\n\n**Ordens para a Rodada 2:**\n[Escreva pedidos diretos para os especialistas ajustarem na próxima rodada]"
-            }
-          ]
-        },
-        "batching": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.9,
-      "position": [
-        3984,
-        480
-      ],
-      "id": "a160f46c-c8fb-4d4e-b774-c01e4c511ec2",
-      "name": "Orquestrador1"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "UkLHeH8XIuSLsrnv",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/UkLHeH8XIuSLsrnv",
-          "cachedResultName": "AGENTE_URBANISTA"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        4880,
-        32
-      ],
-      "id": "f58fdec0-b763-47bc-ab47-d6c86f9ce5ff",
-      "name": "Call 'AGENTE_URBANISTA'2"
-    },
-    {
-      "parameters": {
-        "numberInputs": 6
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        5312,
-        432
-      ],
-      "id": "21bbaf39-cc7e-48e1-8f7b-c60c7edfd813",
-      "name": "Merge2"
-    },
-    {
-      "parameters": {
-        "fieldsToAggregate": {
-          "fieldToAggregate": [
-            {
-              "fieldToAggregate": "text"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        5552,
-        496
-      ],
-      "id": "1905b11b-dc85-4840-82fa-370326eb2895",
-      "name": "Aggregate2"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "AGK8vtbB7YvUw73s",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/AGK8vtbB7YvUw73s",
-          "cachedResultName": "AGENTE_Engenheiro de Infraestrutura"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        4896,
-        256
-      ],
-      "id": "07634c57-b8e4-4fe2-96a3-d8a30690cd7a",
-      "name": "Call 'AGENTE_Engenheiro de Infraestrutura'2"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "CnwEZCKZRGTofo95",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/CnwEZCKZRGTofo95",
-          "cachedResultName": "AGENTE_Ambientalista"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        4880,
-        704
-      ],
-      "id": "1ddc1190-d7cb-41f1-a429-19aa9127115c",
-      "name": "Call 'AGENTE_Ambientalista'2"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "XF5hfdmZXYmbzoHE",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/XF5hfdmZXYmbzoHE",
-          "cachedResultName": "AGENTE_Sociólogo Urbano"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        4880,
-        944
-      ],
-      "id": "3d606863-d745-44d5-a578-7b9dcadb4c82",
-      "name": "Call 'AGENTE_Sociólogo Urbano'2"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "LabKbqXAaKgeBBKK",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/LabKbqXAaKgeBBKK",
-          "cachedResultName": "AGENTE_Especialista em Mobilidade"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        4896,
-        480
-      ],
-      "id": "97b16f47-1ff2-4119-abcd-3ce0052cf125",
-      "name": "Call 'AGENTE_Espec em Mobilidade'2"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "p8pm6nbupWtL2QHp",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/p8pm6nbupWtL2QHp",
-          "cachedResultName": "AGENTE_Economista Urbano"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "briefing": "={{ $json.briefing }}",
-            "contexto": "={{ $json.contexto }}",
-            "propostas_anteriores": "={{ $json.propostas_anteriores }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "briefing",
-              "displayName": "briefing",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "contexto",
-              "displayName": "contexto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "propostas_anteriores",
-              "displayName": "propostas_anteriores",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.4,
-      "position": [
-        4896,
-        1216
-      ],
-      "id": "43e8fc0f-01fc-4d7c-9e26-bc07dd847d05",
-      "name": "Call 'AGENTE_Economista Urbano'2"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "google/gemma-3-4b",
-          "mode": "list",
-          "cachedResultName": "google/gemma-3-4b"
-        },
-        "responsesApiEnabled": false,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        5792,
-        672
-      ],
-      "id": "1407da2e-534f-4c36-82b7-537fa5de31a7",
-      "name": "OpenAI Chat Model3",
-      "credentials": {
-        "openAiApi": {
-          "id": "OSWlrILZhrjcnfPD",
-          "name": "OpenAI account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=PEDIDO INICIAL DO CLIENTE:\n{{ $('Edit Fields').first().json.briefing }}\n\nPROPOSTAS FINAIS APÓS O DEBATE DA EQUIPE:\n{{ $json.text }}",
-        "messages": {
-          "messageValues": [
-            {
-              "message": "=Você é o Orquestrador-Chefe do CityVision AI. \nEsta é a Rodada 3 (Consenso Final). Sua equipe debateu, ajustou custos e corrigiu falhas técnicas nas rodadas anteriores.\n\nSua missão agora é ler as propostas finais, validar se atendem ao orçamento e às exigências técnicas, e decretar a APROVAÇÃO OFICIAL do plano de revitalização urbana. Destaque os pontos fortes acordados e encerre a reunião de forma executiva. Nunca cite anos ou datas."
-            }
-          ]
-        },
-        "batching": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.9,
-      "position": [
-        5792,
-        496
-      ],
-      "id": "e0b9e039-d2a0-4359-b1d5-dc6f1c3957af",
-      "name": "Orquestrador2"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "53cdc05e-2420-4008-b0f5-ffee6a55e53e",
-              "name": "briefing",
-              "value": "={{ $('Edit Fields').first().json.briefing }}",
-              "type": "string"
-            },
-            {
-              "id": "af15eeef-a4eb-4792-a2a0-799fd77633bd",
-              "name": "contexto",
-              "value": "={{ $('Edit Fields').first().json.contexto }}",
-              "type": "string"
-            },
-            {
-              "id": "1b3117aa-70ad-466b-ab50-a35a4c2bc228",
-              "name": "propostas_anteriores",
-              "value": "=[AJUSTES DA RODADA 2]\n{{ $('Aggregate').first().json.text }}\n\n[EXIGÊNCIAS FINAIS DO ORQUESTRADOR PARA O CONSENSO]\n{{ $json.text }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.5,
-      "position": [
-        4368,
-        480
-      ],
-      "id": "5dda684c-f08b-41a4-b250-52c1ebd326e6",
-      "name": "Edit Fields Rodada 3"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.text }}",
-        "messages": {
-          "messageValues": [
-            {
-              "message": "=\nVocê é o APRESENTADOR DE PROJETO E COMUNICADOR OFICIAL da equipe CityVision AI.\n\nPERSONALIDADE E ESTILO:\n- Tom: Persuasivo, claro, elegante, executivo e voltado para gestores públicos, prefeitos e cidadãos. \n- Utiliza técnicas de storytelling urbano, síntese executiva e clareza narrativa para transformar dados técnicos densos em um plano inspirador.\n\nDIRETRIZES DE ATUAÇÃO E REGRAS OBRIGATÓRIAS:\n\n1. LEIA A APROVAÇÃO FINAL: Sintetize rigorosamente os dados aprovados pelo Orquestrador na Rodada 3.\n2. PROIBIDO PLACEHOLDERS: NUNCA utilize colchetes com termos genéricos como \"[Valor Definido pelo Orquestrador]\". Se houver valores de Capex, Opex ou orçamentos debatidos no texto de entrada, traga-os explicitamente para o relatório de forma natural e humanizada. Se não houver um número exato, descreva a alocação estratégica do teto orçamentário geral com base nos debates dos especialistas.\n3. TRAVA TEMPORAL: NUNCA cite anos específicos (como 2023, 2024, 2026) em seu relatório. Fale apenas no presente e no futuro atemporal.\n4. BASE DE DADOS: Baseie-se ESTRITAMENTE nos dados consolidados enviados pelo Orquestrador. Não invente custos ou obras que não foram debatidas.\n5. FORMAÇÃO EXECUTIVA: O texto deve ser impecável, formatado em Markdown limpo e pronto para entrega institucional (apresentação de impacto para prefeitura).\n\nFORMATO DE SAÍDA EXIGIDO:\n# PLANO DIRETOR DE REVITALIZAÇÃO URBANA: [Nome do Local]\n\n## 1. Conceito Mestre e Diagnóstico Territorial\n[Resumo inspirador e realista da situação atual e da visão de futuro]\n\n## 2. Intervenções Prioritárias de Engenharia e Infraestrutura\n[Obras essenciais, drenagem, saneamento e pavimentação]\n\n## 3. Mobilidade Ativa e Acessibilidade\n[Soluções para o fluxo de pedestres, ciclistas e transporte]\n\n## 4. Sustentabilidade e Soluções Baseadas na Natureza (NBS)\n[Áreas verdes, permeabilidade e mitigação de impactos ambientais]\n\n## 5. Impacto Social e Inclusão Comunitária\n[Garantia de participação, habitação e combate à gentrificação]\n\n## 6. Viabilidade Econômica e Orçamento Executivo\n[Apresentação clara dos investimentos em Capex e Opex debatidos pela equipe, teto orçamentário e sustentabilidade financeira, sem placeholders]"
-            }
-          ]
-        },
-        "batching": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.9,
-      "position": [
-        6128,
-        496
-      ],
-      "id": "4e9d3bf7-bb8c-4b89-8288-9f51ebaf64aa",
-      "name": "Apresentador"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "google/gemma-3-4b",
-          "mode": "list",
-          "cachedResultName": "google/gemma-3-4b"
-        },
-        "responsesApiEnabled": false,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        6128,
-        656
-      ],
-      "id": "d995a813-cd09-4e43-88de-c87196abf2d6",
-      "name": "OpenAI Chat Model4",
-      "credentials": {
-        "openAiApi": {
-          "id": "OSWlrILZhrjcnfPD",
-          "name": "OpenAI account"
-        }
-      }
+      "id": "e178812d-2f0a-4c3c-8b90-5ed0f2c27fb0",
+      "name": "On form submission",
+      "webhookId": "a51dea65-7030-4411-a4bb-d0f4b7533cab"
     }
   ],
-  "pinData": {},
   "connections": {
-    "On form submission": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Search the web",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_URBANISTA'": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Search the web": {
       "main": [
         [
@@ -1787,23 +1770,12 @@
         ]
       ]
     },
-    "Aggregate": {
+    "Call 'AGENTE_URBANISTA'": {
       "main": [
         [
           {
-            "node": "Orquestrador",
+            "node": "Merge",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Orquestrador",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -1816,6 +1788,17 @@
             "node": "Merge",
             "type": "main",
             "index": 1
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Espec em Mobilidade'": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
           }
         ]
       ]
@@ -1842,17 +1825,6 @@
         ]
       ]
     },
-    "Call 'AGENTE_Espec em Mobilidade'": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
     "Call 'AGENTE_Economista Urbano'": {
       "main": [
         [
@@ -1864,37 +1836,34 @@
         ]
       ]
     },
-    "Edit Fields Rodada 1": {
+    "Merge": {
       "main": [
         [
           {
-            "node": "Call 'AGENTE_Engenheiro de Infraestrutura'",
+            "node": "Aggregate",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
           {
-            "node": "Call 'AGENTE_URBANISTA'",
+            "node": "Orquestrador",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
           {
-            "node": "Call 'AGENTE_Espec em Mobilidade'",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Call 'AGENTE_Ambientalista'",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Call 'AGENTE_Sociólogo Urbano'",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Call 'AGENTE_Economista Urbano'",
-            "type": "main",
+            "node": "Orquestrador",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -1907,83 +1876,6 @@
             "node": "Edit Fields Rodada 2",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_URBANISTA'1": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge1": {
-      "main": [
-        [
-          {
-            "node": "Aggregate1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Engenheiro de Infraestrutura'1": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Ambientalista'1": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 3
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Sociólogo Urbano'1": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 4
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Espec em Mobilidade'1": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Economista Urbano'1": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 5
           }
         ]
       ]
@@ -2024,12 +1916,78 @@
         ]
       ]
     },
-    "OpenAI Chat Model2": {
-      "ai_languageModel": [
+    "Call 'AGENTE_URBANISTA'1": {
+      "main": [
         [
           {
-            "node": "Orquestrador1",
-            "type": "ai_languageModel",
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Engenheiro de Infraestrutura'1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Espec em Mobilidade'1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Ambientalista'1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Sociólogo Urbano'1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Economista Urbano'1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
             "index": 0
           }
         ]
@@ -2046,100 +2004,23 @@
         ]
       ]
     },
-    "Call 'AGENTE_URBANISTA'2": {
-      "main": [
-        [
-          {
-            "node": "Merge2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge2": {
-      "main": [
-        [
-          {
-            "node": "Aggregate2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Aggregate2": {
-      "main": [
-        [
-          {
-            "node": "Orquestrador2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Engenheiro de Infraestrutura'2": {
-      "main": [
-        [
-          {
-            "node": "Merge2",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Ambientalista'2": {
-      "main": [
-        [
-          {
-            "node": "Merge2",
-            "type": "main",
-            "index": 3
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Sociólogo Urbano'2": {
-      "main": [
-        [
-          {
-            "node": "Merge2",
-            "type": "main",
-            "index": 4
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Espec em Mobilidade'2": {
-      "main": [
-        [
-          {
-            "node": "Merge2",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
-    "Call 'AGENTE_Economista Urbano'2": {
-      "main": [
-        [
-          {
-            "node": "Merge2",
-            "type": "main",
-            "index": 5
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model3": {
+    "OpenAI Chat Model2": {
       "ai_languageModel": [
         [
           {
-            "node": "Orquestrador2",
+            "node": "Orquestrador1",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Orquestrador1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields Rodada 3",
+            "type": "main",
             "index": 0
           }
         ]
@@ -2181,11 +2062,110 @@
         ]
       ]
     },
-    "Orquestrador1": {
+    "Call 'AGENTE_URBANISTA'2": {
       "main": [
         [
           {
-            "node": "Edit Fields Rodada 3",
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Engenheiro de Infraestrutura'2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Espec em Mobilidade'2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Ambientalista'2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Sociólogo Urbano'2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Call 'AGENTE_Economista Urbano'2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Orquestrador2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Orquestrador2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Orquestrador2": {
+      "main": [
+        [
+          {
+            "node": "Apresentador",
             "type": "main",
             "index": 0
           }
@@ -2203,11 +2183,58 @@
         ]
       ]
     },
-    "Orquestrador2": {
+    "Edit Fields": {
       "main": [
         [
           {
-            "node": "Apresentador",
+            "node": "Search the web",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields Rodada 1": {
+      "main": [
+        [
+          {
+            "node": "Call 'AGENTE_URBANISTA'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call 'AGENTE_Engenheiro de Infraestrutura'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call 'AGENTE_Espec em Mobilidade'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call 'AGENTE_Ambientalista'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call 'AGENTE_Sociólogo Urbano'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call 'AGENTE_Economista Urbano'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
@@ -2215,17 +2242,8 @@
       ]
     }
   },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate"
-  },
-  "versionId": "9ccc1afd-ce49-4fb6-98fa-320e1966e7ea",
+  "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "aa1b36f1960b039efe78da9b28bb266332c2b8cebe5c7015c8db8ae30ce725e6"
-  },
-  "nodeGroups": [],
-  "id": "iByStMDW7tDXgF44",
-  "tags": []
+  }
 }
